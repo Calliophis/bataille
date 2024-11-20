@@ -1,0 +1,36 @@
+h1, h2, h3 {
+    color: white;
+    text-align: center;
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+h1 {
+    font-size: 5rem;
+    margin: 24px;
+}
+
+h2 {
+    font-size: 3rem;
+    margin-top: 80px;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    margin: 72px;
+    span {
+        font-size: 1rem;
+        color: black;
+    }
+}
