@@ -13,6 +13,6 @@ export class GameService {
   ) { }
 
   getPlayers(): Observable<Player[]> {
-    return this.http.get<Player[]>('https://localhost/api/v1/docs/players)');
+    return this.http.get<Player[]>('/api/v1/players');
   }
 }
