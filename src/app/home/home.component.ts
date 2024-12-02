@@ -5,8 +5,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { select, Store } from '@ngxs/store';
-import { HistoryState } from '../states/history.state';
-import { GetPlayers } from '../states/history.actions';
+import { PlayerState } from '../states/player.state';
+import { GetPlayersFromService } from '../states/player.actions';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,8 @@ import { GetPlayers } from '../states/history.actions';
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -27,10 +29,14 @@ export class HomeComponent {
   private router = inject(Router);
 
   constructor() {
-    afterNextRender(() => this.store.dispatch(new GetPlayers()))
+    afterNextRender(() => {
+      this.store.dispatch(new GetPlayersFromService());
+      console.log('dispatch')
+  })
   }
 
-  players = select(HistoryState.getPlayers);
+  players = select(PlayerState.getPlayersFromState);
+  isLoading = select(PlayerState.getLoading);
 
   onPlay() {
     this.router.navigateByUrl('/game');
