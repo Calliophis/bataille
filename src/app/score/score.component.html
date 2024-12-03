@@ -1,0 +1,8 @@
+@if (game()) {
+    <div>Partie n°{{ game()?.id }}</div>
+    @for (score of game()?.scores; track $index) {
+        <div>Joueur : {{ score.playerId }}</div>
+        <div>{{ score.score }}</div>
+    }
+}
+

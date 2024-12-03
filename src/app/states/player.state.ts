@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { State, Action, Selector, StateContext } from '@ngxs/store';
+import { State, Action, Selector, StateContext, createSelector } from '@ngxs/store';
 import { GetPlayersFromService } from './player.actions';
 import { Player } from '../models/player.model';
 import { GameService } from '../services/game.service';
@@ -30,9 +30,15 @@ export class PlayerState {
     return state.players;
   }
 
+  static getPlayersById(id: number) {
+    return createSelector([PlayerState], (state: PlayerStateModel) => {
+      return state.players?.find(player => player.id === id)?.name
+    });
+  }
+
   @Selector()
   static getLoading(state: PlayerStateModel) {
-    return state.loading
+    return state.loading;
   }
 
   private gameService = inject(GameService); 
@@ -43,8 +49,7 @@ export class PlayerState {
     return this.gameService.getPlayers().pipe(
       tap(res => {
         ctx.patchState({players: res, loading: false});
-        console.log('patchState');
-    })
+      })
     );
   }
 }
