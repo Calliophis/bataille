@@ -1,16 +1,20 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
-import { GameAction } from './game.actions';
+import { GetGamesFromService } from './game.actions';
 import { Game } from '../models/game.model';
+import { GameService } from '../services/game.service';
+import { tap } from 'rxjs';
 
 export interface GameStateModel {
-  games: Game[];
+  games: Game[] | null;
+  loading: boolean;
 }
 
 @State<GameStateModel>({
   name: 'gameState',
   defaults: {
-    games: []
+    games: null,
+    loading: false
   }
 })
 
@@ -27,10 +31,20 @@ export class GameState {
     return state.games;
   }
 
-  // @Action(GameAction)
-  // add(ctx: StateContext<GameStateModel>, { payload }: GameAction) {
-  //   const stateModel = ctx.getState();
-  //   stateModel.items = [...stateModel.items, payload];
-  //   ctx.setState(stateModel);
-  // }
+  @Selector()
+  static getLoading(state: GameStateModel) {
+    return state.loading;
+  }
+
+  private gameService = inject(GameService)
+
+  @Action(GetGamesFromService)
+  add(ctx: StateContext<GameStateModel>, action: GetGamesFromService) {
+    ctx.patchState({loading: true});
+    return this.gameService.getGames().pipe(
+      tap(res => {
+        ctx.patchState({games: res, loading: false});
+      })
+    );
+  }
 }

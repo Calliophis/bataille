@@ -7,15 +7,11 @@
     </button>
     <section>
         <h3>Historique des parties</h3>
-
-        @if (isLoading()) {
-            <mat-spinner></mat-spinner>
-        }
-
-        @for (player of players(); track $index) {
-                <div>{{ player.name }}</div>
-        }
-        
+        <div class="scores">
+            @for (game of games(); track $index) {
+                <app-score [game]="game"></app-score>
+            }
+        </div>
     </section> 
 </main>
  

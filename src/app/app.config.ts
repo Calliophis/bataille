@@ -7,12 +7,13 @@ import { PlayerState } from './states/player.state';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { GameState } from './states/game.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes), 
     provideStore(
-      [PlayerState], withNgxsReduxDevtoolsPlugin()),
+      [PlayerState, GameState], withNgxsReduxDevtoolsPlugin()),
     provideHttpClient(
       withInterceptors([authInterceptor])
     ),

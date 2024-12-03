@@ -1,4 +1,3 @@
-export class GameAction {
-  static readonly type = '[Game] Add item';
-  constructor(readonly payload: string) { }
+export class GetGamesFromService {
+  static readonly type = '[Game] Get games from service';
 }
