@@ -7,6 +7,9 @@
     </button>
     <section>
         <h3>Historique des parties</h3>
+        @if (isLoading()) {
+            <mat-spinner></mat-spinner>
+        }
         <div class="scores">
             @for (game of games(); track $index) {
                 <app-score [game]="game"></app-score>

@@ -41,6 +41,7 @@ export class HomeComponent {
 
   players = select(PlayerState.getPlayersFromState);
   games = select(GameState.getGamesFromState);
+  isLoading = select(GameState.getLoading);
 
 
   onPlay() {
