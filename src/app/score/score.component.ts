@@ -1,22 +1,19 @@
 import { Component, inject, input } from '@angular/core';
 import { Game } from '../models/game.model';
-import { select, Store } from '@ngxs/store';
-import { PlayerState } from '../states/player.state';
+import { Store } from '@ngxs/store';
+import { playerNamePipe } from '../pipes/playerName.pipe';
 
 @Component({
   selector: 'app-score',
   standalone: true,
-  imports: [],
+  imports: [
+    playerNamePipe
+  ],
   templateUrl: './score.component.html',
   styleUrl: './score.component.scss'
 })
 export class ScoreComponent {
-
-  private store = inject(Store)
-
+  
   game = input<Game | null>(null);
-
-  getPlayerName(id: number) {
-    return select(PlayerState.getPlayersById(id))
-  }
+  
 }
