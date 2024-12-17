@@ -1,0 +1,13 @@
+:host {
+    border: 2px solid #1b3c8f;
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game_id {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
