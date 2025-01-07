@@ -1,0 +1,39 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    margin: 72px;
+    font-size: 2rem;
+}
+ 
+section {
+    display: flex;
+    flex-direction: row;
+    gap: 560px;
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        align-items: center;
+    }
+}
+
+.card {
+    height: 400px;
+    width: 300px;
+    border: 2px solid #1b3c8f;
+    border-radius: 10px;
+    background-color: black;
+}
+
+button {
+    width: 150px;
+}
