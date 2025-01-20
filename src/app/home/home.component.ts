@@ -11,6 +11,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { GetGamesFromService } from '../states/game.actions';
 import { GameState } from '../states/game.state';
 import { ScoreComponent } from '../score/score.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { PlayerPickerComponent } from '../player-picker/player-picker.component';
 
 @Component({
   selector: 'app-home',
@@ -30,8 +32,13 @@ import { ScoreComponent } from '../score/score.component';
 export class HomeComponent {
 
   private store = inject(Store);
-  private router = inject(Router);
+  private dialog = inject(MatDialog);
 
+  players = select(PlayerState.getPlayersFromState);
+  games = select(GameState.getGamesFromState);
+  gameIsLoading = select(GameState.getLoading);
+  playerIsLoading = select(PlayerState.getLoading);
+  
   constructor() {
     afterNextRender(() => {
       this.store.dispatch(new GetPlayersFromService());
@@ -39,12 +46,18 @@ export class HomeComponent {
     })
   }
 
-  players = select(PlayerState.getPlayersFromState);
-  games = select(GameState.getGamesFromState);
-  isLoading = select(GameState.getLoading);
+  openDialog() {
+    const dialogConfig = new MatDialogConfig;
 
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    
+    this.dialog.open(PlayerPickerComponent, dialogConfig);
+  }
 
   onPlay() {
-    this.router.navigateByUrl('/game');
+    this.openDialog();
   }
+
+  
 }

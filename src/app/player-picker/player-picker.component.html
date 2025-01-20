@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Choisissez vos joueurs</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <mat-form-field >
+            <mat-select placeholder="Premier joueur" formControlName="firstPlayer">
+                @for (player of players(); track $index) {
+                    <mat-option [value]="player.id">{{ player.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field [formGroup]="form">
+            <mat-select placeholder="Deuxième joueur" formControlName="secondPlayer">
+                @for (player of players(); track $index) {
+                    <mat-option [value]="player.id">{{ player.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </form>
+        
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button mat-primary (click)="save()">Valider</button>
+</mat-dialog-actions>
+

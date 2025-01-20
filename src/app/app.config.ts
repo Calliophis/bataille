@@ -8,6 +8,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { GameState } from './states/game.state';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,5 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([authInterceptor])
     ),
+    provideAnimations(),
   ]
 };
