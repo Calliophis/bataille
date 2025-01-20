@@ -13,4 +13,8 @@ describe('AuthService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should return a token', () => {
+    expect(service.getToken()).toEqual('MySecret2024!');
+  })
 });
