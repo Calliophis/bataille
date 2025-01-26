@@ -12,3 +12,10 @@ export class DealCards {
     public deck: number[]
   ) {}
 }
+
+export class AddInGamePlayers {
+  static readonly type = '[Game] Add picked players to state'
+  constructor(
+    public playersId: number[]
+  ) {}
+}

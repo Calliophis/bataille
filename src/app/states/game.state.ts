@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
-import { DealCards, GenerateDeck, GetGamesFromService } from './game.actions';
+import { AddInGamePlayers, DealCards, GenerateDeck, GetGamesFromService } from './game.actions';
 import { Game } from '../models/game.model';
 import { GameService } from '../services/game.service';
 import { tap } from 'rxjs';
@@ -17,18 +17,7 @@ export interface GameStateModel {
   defaults: {
     games: null,
     loading: false,
-    inGamePlayers: [
-      {
-        id: 0,
-        cards: [],
-        activeCard: null
-      },
-      {
-        id: 0,
-        cards: [],
-        activeCard: null
-      }
-    ]
+    inGamePlayers: []
   }
 })
 
@@ -102,6 +91,25 @@ export class GameState {
     }
     
     ctx.patchState({inGamePlayers: newPlayers});
+  }
+
+  @Action(AddInGamePlayers)
+  addInGamePlayers(ctx: StateContext<GameStateModel>, action: AddInGamePlayers) {
+    const state = ctx.getState();
+    const inGamePlayers = state.inGamePlayers;
+    const playersPicked: number[] = action.playersId;
+    let newInGamePlayers: InGamePlayer[] = [];    
+
+    for (let i = 0; i < playersPicked.length; i++) {
+      let inGamePlayer: InGamePlayer = {
+        id: playersPicked[i],
+        cards: [],
+        activeCard: null
+      }
+      newInGamePlayers = [...newInGamePlayers, inGamePlayer]
+    }
+
+    ctx.patchState({inGamePlayers: newInGamePlayers});
   }
 
 }
