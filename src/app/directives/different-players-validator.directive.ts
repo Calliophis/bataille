@@ -14,18 +14,12 @@ export function DifferentPlayersValidator(): ValidatorFn {
 
       const idCount = playersId.filter((id: number) => id === playerId)
 
-      // console.log('playerId : ' + playerId + ' - idCount : ' + idCount);
-      
-
       if(idCount.length >= 2) {
-        // console.log('samePlayer');
         
         return { samePlayer: true };
       }
 
     }
-    // console.log('testValidé');
-    
     return null;
   }
 }

@@ -1,27 +1,21 @@
 <h2 mat-dialog-title>Choisissez vos joueurs</h2>
 
 <mat-dialog-content>
-    <form [formGroup]="form">
-        <mat-form-field >
-            <mat-select placeholder="Premier joueur" formControlName="firstPlayer">
-                @for (player of players(); track $index) {
-                    <mat-option [value]="player.id">{{ player.name }}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field [formGroup]="form">
-            <mat-select placeholder="Deuxième joueur" formControlName="secondPlayer">
-                @for (player of players(); track $index) {
-                    <mat-option [value]="player.id">{{ player.name }}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-    </form>
-        
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="all-players-input" formArrayName="playersToPick">
+            @for (playerToPick of playersToPick.controls; track $index) {
+                <mat-form-field>
+                    <mat-select [formControlName]="$index">
+                        @for (player of players(); track player.id) {
+                            <mat-option [value]="player.id" (onSelectionChange)="onChange()">{{ player.name }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>   
+            }
+        </div>
+        <button mat-raised-button type="button" (click)="addPlayerToPick()">+ Ajouter un joueur</button>
+        <button mat-raised-button type="button" (click)="removePlayerToPick()">- Enlever un joueur</button>
+        <button class="submit" mat-raised-button type="submit" [disabled]="!form.valid">Valider</button>
+    </form>     
 </mat-dialog-content>
-
-<mat-dialog-actions>
-    <button mat-raised-button mat-primary (click)="save()">Valider</button>
-</mat-dialog-actions>
 

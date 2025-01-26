@@ -1,10 +1,15 @@
-:host {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.all-players-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.submit {
+    margin-top: 8px;
 }
