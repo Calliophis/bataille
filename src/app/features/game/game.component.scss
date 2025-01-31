@@ -4,14 +4,21 @@
     align-items: center;
 }
 
-h1 {
+h1, h2 {
     color: white;
     text-align: center;
     font-family: "Oswald", sans-serif;
     font-weight: 500;
     font-style: normal;
+}
+
+h1 {
     margin: 72px;
     font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
 }
  
 section {

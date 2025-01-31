@@ -2,12 +2,18 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
 }
 
 .all-players-input {
     display: flex;
     flex-direction: column;
+}
+
+.players-management-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .submit {

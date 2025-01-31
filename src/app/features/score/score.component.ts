@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
-import { Game } from '../models/game.model';
-import { playerNamePipe } from '../pipes/playerName.pipe';
+import { playerNamePipe } from '../../shared/pipes/playerName.pipe';
+import { Game } from '../../shared/models/game.model';
 
 @Component({
   selector: 'app-score',

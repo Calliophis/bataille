@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Nouveau joueur à créer</h2>
+
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Nom</mat-label>
+    <input matInput type="text" [formControl]="newPlayer"/>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">En fait non</button>
+  <button mat-button type="submit" (click)="onSubmit()" autofocus>Ok</button>
+</mat-dialog-actions>

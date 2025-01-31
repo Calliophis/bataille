@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, createSelector } from '@ngxs/store';
-import { GetPlayersFromService } from './player.actions';
+import { CreateNewPlayer, GetPlayersFromService } from './player.actions';
 import { Player } from '../models/player.model';
-import { GameService } from '../services/game.service';
 import { tap } from 'rxjs';
+import { GameService } from '../services/game.service';
 
 export interface PlayerStateModel {
   players: Player[] | null;
@@ -44,7 +44,7 @@ export class PlayerState {
   private gameService = inject(GameService); 
 
   @Action(GetPlayersFromService)
-  add(ctx: StateContext<PlayerStateModel>, action: GetPlayersFromService) {
+  getPlayersFromService(ctx: StateContext<PlayerStateModel>, action: GetPlayersFromService) {
     ctx.patchState({loading: true})
     return this.gameService.getPlayers().pipe(
       tap(res => {
@@ -52,4 +52,12 @@ export class PlayerState {
       })
     );
   }
+
+  @Action(CreateNewPlayer)
+  createNewPlayer(ctx: StateContext<PlayerStateModel>, action: CreateNewPlayer) {
+    const newPlayer = action.name;
+    const state = ctx.getState();
+    const players = state.players;
+  }
+
 }

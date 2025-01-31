@@ -5,13 +5,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { select, Store } from '@ngxs/store';
-import { PlayerState } from '../states/player.state';
-import { GetPlayersFromService } from '../states/player.actions';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
-import { GetGamesFromService } from '../states/game.actions';
-import { GameState } from '../states/game.state';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScoreComponent } from '../score/score.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { PlayerState } from '../../shared/states/player.state';
+import { GameState } from '../../shared/states/game.state';
+import { GetPlayersFromService } from '../../shared/states/player.actions';
+import { GetGamesFromService } from '../../shared/states/game.actions';
 import { PlayerPickerComponent } from '../player-picker/player-picker.component';
 
 @Component({
@@ -48,8 +48,6 @@ export class HomeComponent {
 
   openDialog() {
     const dialogConfig = new MatDialogConfig;
-
-    dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     
     this.dialog.open(PlayerPickerComponent, dialogConfig);

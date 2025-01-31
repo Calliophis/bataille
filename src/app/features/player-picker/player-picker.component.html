@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Choisissez vos joueurs</h2>
+
+@if (isLoading()) {
+    <mat-spinner></mat-spinner>
+}
+
+@else {
+    <mat-dialog-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    
+            <div class="all-players-input" formArrayName="playersToPick">
+                @for (playerToPick of playersToPick.controls; track $index) {
+                    <mat-form-field>
+                        <mat-select [formControlName]="$index">
+                            @for (player of players(); track player.id) {
+                                <mat-option [value]="player.id">{{ player.name }}</mat-option>
+                            }
+                            <mat-option value="newPlayer" (onSelectionChange)="onCreatePlayer()">Nouveau joueur</mat-option>
+                        </mat-select>
+                    </mat-form-field>   
+                }
+            </div>
+    
+            <div class="players-management-buttons">
+                <button mat-flat-button type="button" color="primary" (click)="addPlayerToPick()">
+                    <mat-icon>add</mat-icon>
+                    <span>Ajouter</span>
+                </button>
+    
+                <button mat-stroked-button type="button" color="primary" (click)="removePlayerToPick()">
+                    <mat-icon>remove</mat-icon>
+                    <span>Enlever</span>
+                </button>
+            </div>
+                
+            <button class="submit" mat-fab extended type="submit" [disabled]="!form.valid">
+                <mat-icon>check_circle</mat-icon>
+                <span>Valider</span>
+            </button>
+    
+        </form>     
+    </mat-dialog-content>
+}

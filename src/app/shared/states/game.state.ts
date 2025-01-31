@@ -2,9 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { AddInGamePlayers, DealCards, GenerateDeck, GetGamesFromService } from './game.actions';
 import { Game } from '../models/game.model';
-import { GameService } from '../services/game.service';
 import { tap } from 'rxjs';
 import { InGamePlayer } from '../models/inGamePlayer.model';
+import { GameService } from '../services/game.service';
 
 export interface GameStateModel {
   games: Game[] | null;
