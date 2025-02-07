@@ -4,10 +4,11 @@
   <mat-form-field>
     <mat-label>Nom</mat-label>
     <input matInput type="text" [formControl]="newPlayer"/>
+    <mat-error>{{ getErrorText(newPlayer) }}</mat-error>
   </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button mat-button (click)="onClose()">En fait non</button>
-  <button mat-button type="submit" (click)="onSubmit()" autofocus>Ok</button>
+  <button mat-button type="submit" (click)="onSubmit()" [disabled]="!newPlayer.valid">Ok</button>
 </mat-dialog-actions>
