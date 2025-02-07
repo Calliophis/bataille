@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, createSelector } from '@ngxs/store';
-import { CreateNewPlayer, GetPlayersFromService } from './player.actions';
+import { CreateNewPlayer, GetPlayersFromService, SendPlayerToService } from './player.actions';
 import { Player } from '../models/player.model';
 import { tap } from 'rxjs';
 import { GameService } from '../services/game.service';
@@ -91,5 +91,15 @@ export class PlayerState {
     }
      
     ctx.patchState({ players: newPlayers, newPlayer: newPlayer });
+    ctx.dispatch(new SendPlayerToService(newPlayer));
   }
+
+  @Action(SendPlayerToService)
+  sendPlayerToService(ctx: StateContext<PlayerStateModel>, action: SendPlayerToService) {
+    ctx.patchState({loading: true});
+    return this.gameService.addPlayer(action.player).pipe(
+      tap(() => ctx.patchState({loading: false}))
+    );
+  }
+  
 }

@@ -18,4 +18,8 @@ export class GameService {
   getGames(): Observable<Game[]> {
     return this.http.get<Game[]>('/api/v1/games');
   }
+
+  addPlayer(player: Player): Observable<Player> {
+    return this.http.post<Player>('/api/v1/players', player);
+  }
 }
