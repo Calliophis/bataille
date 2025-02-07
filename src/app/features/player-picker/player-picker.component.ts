@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';  
+import {MatSelectChange, MatSelectModule} from '@angular/material/select';  
 import { select, Store } from '@ngxs/store';
 import { PlayerState } from '../../shared/states/player.state';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -16,6 +16,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import { PlayerCreatorComponent } from '../player-creator/player-creator.component';
 import { DifferentPlayersValidator } from '../../shared/directives/different-players/different-players-validator.directive';
+import { CreateNewPlayer } from '../../shared/states/player.actions';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class PlayerPickerComponent {
 
   players = select(PlayerState.getPlayersFromState);
   isLoading = select(PlayerState.getLoading);
+  newPlayer = select(PlayerState.getNewPlayer);
 
   form: FormGroup = this.formBuilder.group({
     playersToPick: this.formBuilder.array([this.formBuilder.control('', Validators.required)], 
@@ -62,15 +64,39 @@ export class PlayerPickerComponent {
     this.playersToPick.removeAt(this.playersToPick.length-1);
   }
 
-  onCreatePlayer(): void {
+  onChange(event: MatSelectChange): void {
+    if (event.value === 'newPlayer') {
+      this.onCreatePlayer(event);
+    }
+  }
+
+  onCreatePlayer(event: MatSelectChange): void {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.autoFocus = true;
 
     const playerCreator = this.dialog.open(PlayerCreatorComponent, dialogConfig);
+    
     playerCreator.afterClosed().subscribe(res => {
-      console.log(res);
-      
-    })
+      if (res) {
+        this.store.dispatch(new CreateNewPlayer(res));
+        event.source.value = this.newPlayer().id;
+      }
+      else {
+        event.source.value = undefined;
+      }
+    });
+  }
+
+  getErrorText(control: AbstractControl) {
+    if (control.hasError('soloPlayer')) {
+      return 'Minimum 2 joueurs requis';
+    }
+    if (control.hasError('samePlayer')) {
+      return 'Les joueurs doivent être différents';
+    }
+    else {
+      return;
+    }
   }
 
   onSubmit(): void {

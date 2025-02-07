@@ -11,11 +11,11 @@
             <div class="all-players-input" formArrayName="playersToPick">
                 @for (playerToPick of playersToPick.controls; track $index) {
                     <mat-form-field>
-                        <mat-select [formControlName]="$index">
+                        <mat-select [formControlName]="$index" (selectionChange)="onChange($event)">
                             @for (player of players(); track player.id) {
                                 <mat-option [value]="player.id">{{ player.name }}</mat-option>
                             }
-                            <mat-option value="newPlayer" (onSelectionChange)="onCreatePlayer()">Nouveau joueur</mat-option>
+                            <mat-option value="newPlayer" >Nouveau joueur</mat-option>
                         </mat-select>
                     </mat-form-field>   
                 }
@@ -32,6 +32,8 @@
                     <span>Enlever</span>
                 </button>
             </div>
+
+            <mat-error>{{ getErrorText(playersToPick) }}</mat-error>
                 
             <button class="submit" mat-fab extended type="submit" [disabled]="!form.valid">
                 <mat-icon>check_circle</mat-icon>

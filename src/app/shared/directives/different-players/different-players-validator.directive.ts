@@ -5,7 +5,7 @@ export function DifferentPlayersValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const playersId = control.value;
     
-    if (playersId.length < 2) {
+    if (playersId.length < 2 && control.dirty) {
       return { soloPlayer: true };
     }
 

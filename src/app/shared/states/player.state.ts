@@ -8,13 +8,18 @@ import { GameService } from '../services/game.service';
 export interface PlayerStateModel {
   players: Player[] | null;
   loading: boolean;
+  newPlayer: Player;
 }
 
 @State<PlayerStateModel>({
   name: 'playerState',
   defaults: {
     players: null,
-    loading: false
+    loading: false,
+    newPlayer: {
+      id: 0,
+      name: ''
+    }
   }
 })
 @Injectable()
@@ -29,7 +34,8 @@ export class PlayerState {
   static getPlayersFromState(state: PlayerStateModel) {
     return state.players;
   }
-
+ 
+  @Selector()
   static getPlayersById(id: number) {
     return createSelector([PlayerState], (state: PlayerStateModel) => {
       return state.players?.find(player => player.id === id)?.name
@@ -39,6 +45,11 @@ export class PlayerState {
   @Selector()
   static getLoading(state: PlayerStateModel) {
     return state.loading;
+  }
+
+  @Selector()
+  static getNewPlayer(state: PlayerStateModel) {
+    return state.newPlayer;
   }
 
   private gameService = inject(GameService); 
@@ -55,9 +66,30 @@ export class PlayerState {
 
   @Action(CreateNewPlayer)
   createNewPlayer(ctx: StateContext<PlayerStateModel>, action: CreateNewPlayer) {
-    const newPlayer = action.name;
     const state = ctx.getState();
     const players = state.players;
-  }
+    let newPlayer = state.newPlayer;
 
+    let newPlayers: Player[] = [];
+    
+    if (players) {
+      let maxId = players[0].id;
+
+      for (let i = 0; i < players.length; i++) {
+        const playerId = players[i].id;
+        if (playerId > maxId) {
+          maxId = playerId;
+        }
+      };
+
+      newPlayer = {
+        id: maxId + 1,
+        name: action.name
+      };
+  
+      newPlayers = [... players, newPlayer];
+    }
+     
+    ctx.patchState({ players: newPlayers, newPlayer: newPlayer });
+  }
 }
