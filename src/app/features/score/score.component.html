@@ -1,6 +1,6 @@
 @if (game()) {
     <div class="game_id">Partie n°{{ game()?.id }}</div>
-    @for (score of game()?.scores; track $index) {
+    @for (score of sortedScores(); track score.playerId) {
         <div>
             <span>{{ score.playerId | playerName }} : </span>
             <span>{{ score.score }}</span>
