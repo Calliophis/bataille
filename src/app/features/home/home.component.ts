@@ -49,6 +49,8 @@ export class HomeComponent {
   openDialog() {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = '310px';
+    dialogConfig.minHeight = '250px';
     
     this.dialog.open(PlayerPickerComponent, dialogConfig);
   }
