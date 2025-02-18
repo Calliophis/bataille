@@ -1,14 +1,11 @@
 <h1>Que la meilleure carte gagne !</h1>
-<div>{{ inGamePlayers() }}</div>
 <section>
-    <div>
-        <h2>Player 1</h2>
-        <div class="card"></div>
-        <button mat-fab extended id="playerAButton">Retourner</button>
-    </div>
-    <div>
-        <h2>Player 2</h2>
-        <div class="card"></div>
-        <button mat-fab extended id="playerBButton">Retourner</button>
-    </div>    
+    @for (inGamePlayer of inGamePlayers(); track inGamePlayer.id) {
+        <div>
+            <h2>{{ inGamePlayer.id | playerName }}</h2>
+            <span>Score : {{ inGamePlayer.score }}</span>
+            <app-card [cardValue]="inGamePlayer.activeCard" [isFlipped]="inGamePlayer.hasPlayed"></app-card>
+            <button mat-fab extended [id]="inGamePlayer.id" (click)="onTurnOver(inGamePlayer.id)" [disabled]="inGamePlayer.hasPlayed">Retourner</button>
+        </div>
+    }   
 </section>

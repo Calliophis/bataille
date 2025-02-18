@@ -20,25 +20,21 @@ h1 {
 h2 {
     font-size: 1.5rem;
 }
+
+span {
+    color: white;
+    font-size: 1rem;
+}
  
 section {
     display: flex;
-    flex-direction: row;
-    gap: 560px;
+    gap: 32px;
     div {
         display: flex;
         flex-direction: column;
         gap: 32px;
         align-items: center;
     }
-}
-
-.card {
-    height: 400px;
-    width: 300px;
-    border: 2px solid #1b3c8f;
-    border-radius: 10px;
-    background-color: black;
 }
 
 button {
