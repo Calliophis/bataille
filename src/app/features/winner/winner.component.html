@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Bravo !</h2>
+<mat-dialog-content>
+    @if (winners.length < 2) {
+        <h3>{{ winners()[0].id | playerName }} a gagné la partie</h3>
+    } @else {
+        @for (winner of winners(); track winner.id) {
+            <h3>{{ winner.id | playerName }}</h3>
+        }
+        <h3>ont gagné la partie</h3>
+    }
+    
+    <div>Score :</div>
+    @for (inGamePlayer of inGamePlayers(); track inGamePlayer.id) {
+        <div>{{ inGamePlayer.id | playerName  }} : {{ inGamePlayer.score }}</div>
+    }
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="onClose()">Fermer</button>
+</mat-dialog-actions>

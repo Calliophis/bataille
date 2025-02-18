@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h2 {
+    font-size: 1.5rem;
+}
+h3 {
+    font-size: 1.2rem;
+}
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
