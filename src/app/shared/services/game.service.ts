@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player.model';
 import { Game } from '../models/game.model';
+import { Score } from '../models/score.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,9 @@ export class GameService {
 
   addPlayer(player: Player): Observable<Player> {
     return this.http.post<Player>('/api/v1/players', player);
+  }
+
+  addGame(scores: Score[]): Observable<Score[]> {
+    return this.http.post<Score[]>('/api/v1/games', scores);
   }
 }
