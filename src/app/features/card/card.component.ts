@@ -1,0 +1,14 @@
+import { Component, input } from '@angular/core';
+
+@Component({
+  selector: 'app-card',
+  standalone: true,
+  imports: [],
+  templateUrl: './card.component.html',
+  styleUrl: './card.component.scss'
+})
+export class CardComponent {
+  cardValue = input<number | null>(null);
+  isFlipped = input<Boolean>(false);
+
+}
