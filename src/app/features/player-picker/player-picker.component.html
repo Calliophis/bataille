@@ -1,6 +1,9 @@
 
 @if (isLoading()) {
-    <mat-spinner></mat-spinner>
+    <h2 mat-dialog-title>Création du nouveau joueur...</h2>
+    <mat-dialog-content>
+        <mat-spinner></mat-spinner>
+    </mat-dialog-content>
 }
 
 @else {
@@ -16,7 +19,7 @@
                             @for (player of players(); track player.id) {
                                 <mat-option [value]="player.id">{{ player.name }}</mat-option>
                             }
-                            <mat-option value="newPlayer" >Nouveau joueur</mat-option>
+                            <mat-option value="newPlayer">Nouveau joueur</mat-option>
                         </mat-select>
                     </mat-form-field>   
                 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectChange, MatSelectModule} from '@angular/material/select';  
 import { select, Store } from '@ngxs/store';
@@ -17,6 +17,7 @@ import {MatInputModule} from '@angular/material/input';
 import { PlayerCreatorComponent } from '../player-creator/player-creator.component';
 import { DifferentPlayersValidator } from '../../shared/directives/different-players/different-players-validator.directive';
 import { CreateNewPlayer } from '../../shared/states/player.actions';
+import { tap } from 'rxjs';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class PlayerPickerComponent {
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private dialogRef = inject(MatDialogRef)
 
   players = select(PlayerState.getPlayersFromState);
   isLoading = select(PlayerState.getLoading);
@@ -89,10 +91,13 @@ export class PlayerPickerComponent {
 
   getErrorText(control: AbstractControl) {
     if (control.hasError('soloPlayer')) {
-      return 'Minimum 2 joueurs requis';
+      return 'Minimum 2 joueurs';
     }
     if (control.hasError('samePlayer')) {
       return 'Les joueurs doivent être différents';
+    }
+    if (control.hasError('tooManyPlayers')) {
+      return 'Maximum 4 joueurs';
     }
     else {
       return;
@@ -100,8 +105,13 @@ export class PlayerPickerComponent {
   }
 
   onSubmit(): void {
-    this.store.dispatch(new AddInGamePlayers(this.playersToPick.value));
-    this.router.navigateByUrl('/game');
+    this.store.dispatch(new AddInGamePlayers(this.playersToPick.value)).pipe(
+      tap(() => {
+        this.dialogRef.close();
+        this.router.navigateByUrl('/game');
+      })
+    ).subscribe();
+    
   }
 
 }

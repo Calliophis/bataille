@@ -9,6 +9,10 @@ export function DifferentPlayersValidator(): ValidatorFn {
       return { soloPlayer: true };
     }
 
+    if (playersId.length > 4) {
+      return { tooManyPlayers: true };
+    }
+
     for (let i = 0; i < playersId.length; i++) {
       const playerId = playersId[i];
 
