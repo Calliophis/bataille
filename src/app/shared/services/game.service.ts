@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Player } from '../models/player.model';
 import { Game } from '../models/game.model';
 import { Score } from '../models/score.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,21 @@ import { Score } from '../models/score.model';
 export class GameService {
 
   private http = inject(HttpClient);
+  apiUrl = environment.apiUrl;
 
   getPlayers(): Observable<Player[]> {
-    return this.http.get<Player[]>('/api/v1/players');
+    return this.http.get<Player[]>(`${this.apiUrl}/players`);
   }
 
   getGames(): Observable<Game[]> {
-    return this.http.get<Game[]>('/api/v1/games');
+    return this.http.get<Game[]>(`${this.apiUrl}/games`);
   }
 
   addPlayer(player: Player): Observable<Player> {
-    return this.http.post<Player>('/api/v1/players', player);
+    return this.http.post<Player>(`${this.apiUrl}/players`, player);
   }
 
   addGame(scores: Score[]): Observable<Score[]> {
-    return this.http.post<Score[]>('/api/v1/games', scores);
+    return this.http.post<Score[]>(`${this.apiUrl}/games`, scores);
   }
 }
