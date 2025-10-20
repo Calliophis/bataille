@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, createSelector } from '@ngxs/store';
-import { CreateNewPlayer, GetPlayersFromService, SendPlayerToService } from './player.actions';
+import { GetPlayersFromService, SendPlayerToService } from './player.actions';
 import { Player } from '../models/player.model';
-import { tap } from 'rxjs';
+import { delay, map, tap } from 'rxjs';
 import { GameService } from '../services/game.service';
 
 export interface PlayerStateModel {
@@ -17,7 +17,7 @@ export interface PlayerStateModel {
     players: null,
     loading: false,
     newPlayer: {
-      id: 0,
+      id: '',
       name: ''
     }
   }
@@ -36,7 +36,7 @@ export class PlayerState {
   }
  
   @Selector()
-  static getPlayersById(id: number) {
+  static getPlayersById(id: string) {
     return createSelector([PlayerState], (state: PlayerStateModel) => {
       return state.players?.find(player => player.id === id)?.name
     });
@@ -58,48 +58,21 @@ export class PlayerState {
   getPlayersFromService(ctx: StateContext<PlayerStateModel>, action: GetPlayersFromService) {
     ctx.patchState({loading: true})
     return this.gameService.getPlayers().pipe(
-      tap(res => {
-        ctx.patchState({players: res, loading: false});
+      tap(players => {
+        ctx.patchState({players: players, loading: false});
       })
     );
-  }
-
-  @Action(CreateNewPlayer)
-  createNewPlayer(ctx: StateContext<PlayerStateModel>, action: CreateNewPlayer) {
-    const state = ctx.getState();
-    const players = state.players;
-    let newPlayer = state.newPlayer;
-
-    let newPlayers: Player[] = [];
-    
-    if (players) {
-      let maxId = players[0].id;
-
-      for (let i = 0; i < players.length; i++) {
-        const playerId = players[i].id;
-        if (playerId > maxId) {
-          maxId = playerId;
-        }
-      };
-
-      newPlayer = {
-        id: maxId + 1,
-        name: action.name
-      };
-  
-      newPlayers = [... players, newPlayer];
-    }
-     
-    ctx.patchState({ players: newPlayers, newPlayer: newPlayer });
-    ctx.dispatch(new SendPlayerToService(newPlayer));
   }
 
   @Action(SendPlayerToService)
   sendPlayerToService(ctx: StateContext<PlayerStateModel>, action: SendPlayerToService) {
     ctx.patchState({loading: true});
-    return this.gameService.addPlayer(action.player).pipe(
-      tap(() => ctx.patchState({loading: false}))
+    return this.gameService.addPlayer(action.playerName).pipe(
+      delay(1000),
+      map(player => ctx.patchState({newPlayer: player, loading: false})),
+      tap(() => {
+        ctx.dispatch(new GetPlayersFromService());
+      })
     );
-  }
-  
+  } 
 }

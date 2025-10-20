@@ -15,7 +15,7 @@
             <div class="all-players-input" formArrayName="playersToPick">
                 @for (playerToPick of playersToPick.controls; track $index) {
                     <mat-form-field>
-                        <mat-select [formControlName]="$index" (selectionChange)="onChange($event)">
+                        <mat-select [formControlName]="$index" (selectionChange)="onChange($event, $index)">
                             @for (player of players(); track player.id) {
                                 <mat-option [value]="player.id">{{ player.name }}</mat-option>
                             }

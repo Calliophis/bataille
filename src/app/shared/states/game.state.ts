@@ -68,7 +68,7 @@ export class GameState {
 
   @Action(AddInGamePlayers)
   addInGamePlayers(ctx: StateContext<GameStateModel>, action: AddInGamePlayers) {
-    const playersPicked: number[] = action.playersId;
+    const playersPicked: string[] = action.playersId;
     let newInGamePlayers: InGamePlayer[] = [];    
 
     for (let i = 0; i < playersPicked.length; i++) {
@@ -144,7 +144,6 @@ export class GameState {
       ctx.patchState({inGamePlayers: players});
       ctx.dispatch(new TakeTurns(playerId));
     }
-    
   }
 
   @Action(TakeTurns)
@@ -174,7 +173,6 @@ export class GameState {
           ctx.patchState({inGamePlayers: players});
         }, 1000);
       }
-      
     }
   }
 
@@ -208,23 +206,11 @@ export class GameState {
     
     const state = ctx.getState();
     const players = state.inGamePlayers;
-    let winners = state.winners;
+    const scores: number[] = [];
     
-    let max = players[0].score;
-
-    for (let i = 0; i < players.length; i++) {
-      const score = players[i].score;
-      if (score > max) {
-        max = score;
-      }
-    }
+    players.forEach(player => scores.push(player.score));   
     
-    for (let i = 0; i < players.length; i++) {
-      const player = players[i];
-      if (player.score === max) {
-        winners = [... winners, player];
-      }
-    }
+    const winners = players.filter(player => player.score === Math.max(...scores));
 
     ctx.patchState({winners: winners});
     ctx.dispatch(new SaveGame());
@@ -233,22 +219,14 @@ export class GameState {
   @Action(SaveGame)
   saveGame(ctx: StateContext<GameStateModel>, action: SaveGame) {
     const state = ctx.getState();
-    let games = state.games;
+    const games = state.games;
     const players = state.inGamePlayers;
 
-    let newScores: Score[] = [];
+    let scores: Score[] = [];
 
     if (games) {
-
-      for (let i = 0; i < players.length; i++) {
-        const player = players[i];
-        const newScore = {
-          playerId: player.id,
-          score: player.score 
-        }
-        newScores = [... newScores, newScore];
-      }
-      ctx.dispatch(new SendScoresToService(newScores));
+      players.forEach(player => scores.push({playerId: player.id, score: player.score}));
+      ctx.dispatch(new SendScoresToService(scores));
     }
   }
 

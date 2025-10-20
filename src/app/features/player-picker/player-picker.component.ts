@@ -16,9 +16,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import { PlayerCreatorComponent } from '../player-creator/player-creator.component';
 import { DifferentPlayersValidator } from '../../shared/directives/different-players/different-players-validator.directive';
-import { CreateNewPlayer } from '../../shared/states/player.actions';
+import { SendPlayerToService } from '../../shared/states/player.actions';
 import { tap } from 'rxjs';
-
 
 @Component({
   selector: 'app-player-picker',
@@ -55,7 +54,7 @@ export class PlayerPickerComponent {
   })
 
   get playersToPick(): FormArray {
-    return this.form.get('playersToPick') as FormArray;
+    return this.form.controls['playersToPick'] as FormArray;
   }
 
   addPlayerToPick(): void {
@@ -66,25 +65,27 @@ export class PlayerPickerComponent {
     this.playersToPick.removeAt(this.playersToPick.length-1);
   }
 
-  onChange(event: MatSelectChange): void {
+  onChange(event: MatSelectChange, index: number): void {
     if (event.value === 'newPlayer') {
-      this.onCreatePlayer(event);
+      this.onCreatePlayer(index);
     }
   }
 
-  onCreatePlayer(event: MatSelectChange): void {
+  onCreatePlayer(index: number): void {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.autoFocus = true;
 
     const playerCreator = this.dialog.open(PlayerCreatorComponent, dialogConfig);
     
-    playerCreator.afterClosed().subscribe(res => {
-      if (res) {
-        this.store.dispatch(new CreateNewPlayer(res));
-        event.source.value = this.newPlayer().id;
-      }
-      else {
-        event.source.value = undefined;
+    playerCreator.afterClosed().subscribe(playerName => {
+      if (playerName) {
+        this.store.dispatch(new SendPlayerToService(playerName)).pipe(
+          tap(() => {
+            if (this.newPlayer().id) {
+              this.playersToPick.controls[index].setValue(this.newPlayer().id);
+            }
+          })
+        ).subscribe();
       }
     });
   }
@@ -110,8 +111,6 @@ export class PlayerPickerComponent {
         this.dialogRef.close();
         this.router.navigateByUrl('/game');
       })
-    ).subscribe();
-    
+    ).subscribe(); 
   }
-
 }

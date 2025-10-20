@@ -7,8 +7,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = auth.getToken();
   
   if (!token) {
-    console.log('No token')
-    return next(req)
+    return next(req);
   }
 
   const headers = new HttpHeaders({

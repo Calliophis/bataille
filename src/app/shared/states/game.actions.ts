@@ -18,21 +18,21 @@ export class DealCards {
 export class AddInGamePlayers {
   static readonly type = '[Game] Add picked players to state'
   constructor(
-    public playersId: number[]
+    public playersId: string[]
   ) {}
 }
 
 export class TurnOverCard {
   static readonly type = '[Game] Turn a card over to make its value visible'
   constructor(
-    public id: number
+    public id: string
   ) {}
 }
 
 export class TakeTurns {
   static readonly type = '[Game] Manage players turns'
   constructor(
-    public id: number
+    public id: string
   ) {}
 }
 

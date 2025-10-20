@@ -22,8 +22,8 @@ export class GameService {
     return this.http.get<Game[]>(`${this.apiUrl}/games`);
   }
 
-  addPlayer(player: Player): Observable<Player> {
-    return this.http.post<Player>(`${this.apiUrl}/players`, player);
+  addPlayer(playerName: string): Observable<Player> {
+    return this.http.post<Player>(`${this.apiUrl}/players`, { playerName });
   }
 
   addGame(scores: Score[]): Observable<Score[]> {

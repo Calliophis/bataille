@@ -29,7 +29,7 @@ export class WinnerComponent {
 
   onClose() {
     this.dialogRef.close();
-    this.store.dispatch(new ResetWinners());
     this.router.navigateByUrl('/home');
+    setTimeout(() => this.store.dispatch(new ResetWinners()), 3000);
   }
 }

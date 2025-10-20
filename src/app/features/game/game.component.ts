@@ -46,7 +46,7 @@ export class GameComponent {
     ).subscribe();
   }
 
-  onTurnOver(id: number) {
+  onTurnOver(id: string) {
     this.store.dispatch(new TurnOverCard(id));
   }
 
@@ -57,6 +57,4 @@ export class GameComponent {
     
     this.dialog.open(WinnerComponent, dialogConfig);
   }
-
-  
 }

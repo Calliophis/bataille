@@ -1,5 +1,5 @@
 export interface InGamePlayer {
-    id: number;
+    id: string;
     cards: number[];
     activeCard: number | null;
     hasPlayed: boolean;

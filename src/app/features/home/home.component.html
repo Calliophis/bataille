@@ -9,12 +9,14 @@
         <h3>Historique des parties</h3>
         @if (gameIsLoading() || playerIsLoading()) {
             <mat-spinner></mat-spinner>
+        } @else {
+            <div class="scores">
+                @for (game of games(); track $index) {
+                    <app-score [game]="game"></app-score>
+                }
+            </div>
         }
-        <div class="scores">
-            @for (game of games(); track $index) {
-                <app-score [game]="game"></app-score>
-            }
-        </div>
+        
     </section> 
 </main>
  

@@ -11,11 +11,11 @@ export class playerNamePipe implements PipeTransform {
     
     players = select(PlayerState.getPlayersFromState);
     
-    getPlayerNameById(id: number): string | undefined {
+    getPlayerNameById(id: string): string | undefined {
         return this.players()?.find(player => player.id === id)?.name;
     }
     
-    transform(value: number) {
+    transform(value: string) {
         return this.getPlayerNameById(value);
     }
 }
