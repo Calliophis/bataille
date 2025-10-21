@@ -55,7 +55,7 @@ export class PlayerState {
   private gameService = inject(GameService); 
 
   @Action(GetPlayersFromService)
-  getPlayersFromService(ctx: StateContext<PlayerStateModel>, action: GetPlayersFromService) {
+  getPlayersFromService(ctx: StateContext<PlayerStateModel>) {
     ctx.patchState({loading: true})
     return this.gameService.getPlayers().pipe(
       tap(players => {

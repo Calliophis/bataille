@@ -55,7 +55,7 @@ export class GameState {
   private gameService = inject(GameService)
 
   @Action(GetGamesFromService)
-  getGamesFromService(ctx: StateContext<GameStateModel>, action: GetGamesFromService) {
+  getGamesFromService(ctx: StateContext<GameStateModel>) {
 
     ctx.patchState({loading: true});
     
@@ -71,9 +71,9 @@ export class GameState {
     const playersPicked: string[] = action.playersId;
     let newInGamePlayers: InGamePlayer[] = [];    
 
-    for (let i = 0; i < playersPicked.length; i++) {
-      let inGamePlayer: InGamePlayer = {
-        id: playersPicked[i],
+    for (const playerPicked of playersPicked) {
+      const inGamePlayer: InGamePlayer = {
+        id: playerPicked,
         cards: [],
         activeCard: null,
         hasPlayed: false,
@@ -86,7 +86,7 @@ export class GameState {
   }
 
   @Action(GenerateDeck)
-  generateDeck(ctx: StateContext<GameStateModel>, action: GenerateDeck) {
+  generateDeck(ctx: StateContext<GameStateModel>) {
 
     const newDeck: number[] = [];
     
@@ -119,7 +119,7 @@ export class GameState {
     }
 
     for (let i = 0; i < players.length; i++) {
-      let newPlayer = {...players[i]};
+      const newPlayer = {...players[i]};
       newPlayer.cards = dividedDeck[i];
       newPlayers = [...newPlayers, newPlayer];
     }
@@ -177,7 +177,7 @@ export class GameState {
   }
 
   @Action(CalculateScore)
-  calculateScore(ctx: StateContext<GameStateModel>, action: CalculateScore) {
+  calculateScore(ctx: StateContext<GameStateModel>) {
     
     const state = ctx.getState();
     const players = state.inGamePlayers;
@@ -202,7 +202,7 @@ export class GameState {
   }
 
   @Action(EndGame)
-  endGame(ctx: StateContext<GameStateModel>, action: EndGame) {
+  endGame(ctx: StateContext<GameStateModel>) {
     
     const state = ctx.getState();
     const players = state.inGamePlayers;
@@ -217,12 +217,12 @@ export class GameState {
   }
 
   @Action(SaveGame)
-  saveGame(ctx: StateContext<GameStateModel>, action: SaveGame) {
+  saveGame(ctx: StateContext<GameStateModel>) {
     const state = ctx.getState();
     const games = state.games;
     const players = state.inGamePlayers;
 
-    let scores: Score[] = [];
+    const scores: Score[] = [];
 
     if (games) {
       players.forEach(player => scores.push({playerId: player.id, score: player.score}));
@@ -239,7 +239,7 @@ export class GameState {
   }
 
   @Action(ResetWinners)
-  resetWinners(ctx: StateContext<GameStateModel>, action: ResetWinners) {
+  resetWinners(ctx: StateContext<GameStateModel>) {
     ctx.patchState({winners: []})
   }
 }

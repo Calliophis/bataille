@@ -13,8 +13,7 @@ export function DifferentPlayersValidator(): ValidatorFn {
       return { tooManyPlayers: true };
     }
 
-    for (let i = 0; i < playersId.length; i++) {
-      const playerId = playersId[i];
+    for (const playerId of playersId) {
 
       const idCount = playersId.filter((id: number) => id === playerId)
 

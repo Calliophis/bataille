@@ -9,6 +9,6 @@ import { Component, input } from '@angular/core';
 })
 export class CardComponent {
   cardValue = input<number | null>(null);
-  isFlipped = input<Boolean>(false);
+  isFlipped = input<boolean>(false);
 
 }
