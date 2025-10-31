@@ -87,44 +87,45 @@ export class GameState {
 
   @Action(GenerateDeck)
   generateDeck(ctx: StateContext<GameStateModel>) {
-
     const newDeck: number[] = [];
     
     for (let i = 1; i < 53; i++) {
       newDeck.push(i);
     };
     
-    for (let i = newDeck.length - 1; i > 0 ; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]]; 
-    };
+    const shuffledDeck = this.shuffleCards(newDeck);
     
-    ctx.dispatch(new DealCards(newDeck))
+    ctx.dispatch(new DealCards(shuffledDeck));
+  }
+
+  shuffleCards(deck: number[]): number[] {
+    let card: number;
+    for (let i = deck.length - 1; i > 0 ; i--) {
+      const random = Math.floor(Math.random() * (i + 1));
+      card = deck[i];
+      deck[i] = deck[random];
+      deck[random] = card;
+    };
+    return deck
   }
 
   @Action(DealCards)
   dealCards(ctx: StateContext<GameStateModel>, action: DealCards) {
-
     const state = ctx.getState();
-    const deck: number[] = action.deck;
+    const deck: number[] = [...action.deck];
     const players: InGamePlayer[] = state.inGamePlayers;
-    let dividedDeck: number[][] = [];
-    let newPlayers: InGamePlayer[] = [];
     
     const cardsPerPlayer: number = Math.floor(deck.length/players.length);
-    
-    for (let i = 0; i < deck.length; i += cardsPerPlayer) {
-      const subDeck = deck.slice(i, i + cardsPerPlayer);
-      dividedDeck = [...dividedDeck, subDeck];
-    }
+    const totalCardsToDeal = cardsPerPlayer * players.length;
+    const deckToDeal = deck.slice(0, totalCardsToDeal);
+    let playerIndex = 0;
 
-    for (let i = 0; i < players.length; i++) {
-      const newPlayer = {...players[i]};
-      newPlayer.cards = dividedDeck[i];
-      newPlayers = [...newPlayers, newPlayer];
+    for (const card of deckToDeal) {
+      players[playerIndex].cards.push(card);
+      playerIndex = (playerIndex + 1) % players.length;
     }
     
-    ctx.patchState({inGamePlayers: newPlayers});
+    ctx.patchState({inGamePlayers: players});
   }
 
   @Action(TurnOverCard)
